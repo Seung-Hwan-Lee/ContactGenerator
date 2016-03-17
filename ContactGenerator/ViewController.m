@@ -58,34 +58,68 @@
     }
 }
 
+- (IBAction)tapCleanButton:(id)sender
+{
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted){
+        //1
+        NSLog(@"Denied");
+        UIAlertView *cantAddContactAlert = [[UIAlertView alloc] initWithTitle: @"Cannot Clean Contact"
+                                                                      message: @"You must give the app permission to clean the contact first."
+                                                                     delegate:nil
+                                                            cancelButtonTitle: @"OK"
+                                                            otherButtonTitles: nil];
+        [cantAddContactAlert show];
+    } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized){
+        //2
+        NSLog(@"Authorized");
+        [self cleanAllContacts];
+        NSLog(@"\nCompleted!");
+    } else{ //ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined
+        //3
+        NSLog(@"Not determined");
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreateWithOptions(NULL, nil), ^(bool granted, CFErrorRef error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!granted){
+                    //4
+                    UIAlertView *cantAddContactAlert = [[UIAlertView alloc] initWithTitle: @"Cannot Clean Contact"
+                                                                                  message: @"You must give the app permission to clean the contact first."
+                                                                                 delegate:nil
+                                                                        cancelButtonTitle: @"OK"
+                                                                        otherButtonTitles: nil];
+                    [cantAddContactAlert show];
+                    return;
+                }
+                //5
+                [self cleanAllContacts];
+                NSLog(@"\nCompleted!");
+            });
+        });
+    }
+}
+
+- (void)cleanAllContacts
+{
+    ABAddressBookRef addressBookRef = ABAddressBookCreate( );
+    CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople( addressBookRef );
+    CFIndex nPeople = ABAddressBookGetPersonCount( addressBookRef );
+
+    for ( int i = 0; i < nPeople; i++ )
+    {
+        ABRecordRef ref = CFArrayGetValueAtIndex( allPeople, i );
+
+        CFErrorRef *error = nil;
+        if (!ABAddressBookRemoveRecord(addressBookRef, ref, error)) {
+            NSLog(@"error %@", *error);
+            break;
+        }
+    }
+
+    ABAddressBookSave(addressBookRef, nil);
+}
+
 - (void)generateSimulatorContacts
 {
-    //    4800 0081
-    //    0099
-    //
-    //
-    //    5000 0081
-    //    0099
-    //
-    //
-    //    5800 0081
-    //    0099
-    //
-    //
-    //    6000 0081
-    //    0099
-    //
-    //
-    //    6004 0081
-    //    0099
-    //
-    //
-    //    6800 0091
-    //    0099
-    //
-    //
-    //    6804 0081
-    //    0099
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, nil);
     
     NSDictionary<NSString*,NSString*> *countryPrefixDic = @{@"KR" : @"010",
