@@ -132,12 +132,17 @@
                                                           @"6"   : @"6000",
                                                           @"6+"  : @"6004",
                                                           @"6s"  : @"6800",
-                                                          @"6s+" : @"6804"};
+                                                          @"6s+" : @"6804",
+                                                          @"7"   : @"7000",
+                                                          @"7+"  : @"7004",
+                                                          @"8"   : @"8000",
+                                                          @"8+"  : @"8004",
+                                                          };
         [[[contactDic allKeys] sortedArrayUsingSelector:@selector(compare:)] enumerateObjectsUsingBlock:^(NSString * _Nonnull model, NSUInteger idx, BOOL * _Nonnull stop) {
             
             NSString * telPrefix = contactDic[model];
             
-            for (NSInteger tel2 = 81 ; tel2 < 100 ; tel2++) {
+            for (NSInteger tel2 = 81 ; tel2 < 110 ; tel2++) {
                 
                 NSString *contactName = [NSString stringWithFormat:@"%@ sim %@ %ld.%ld", countryCode, model, (long)(tel2/10), (long)(tel2%10)];
                 NSString *telNumber = [NSString stringWithFormat:@"%@%@%04ld", countryTel, telPrefix, (long)tel2];
@@ -167,13 +172,12 @@
                                                             @"JP" : @"080"};
     [countryPrefixDic enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull countryCode, NSString * _Nonnull countryTel, BOOL * _Nonnull stop) {
         
-        NSDictionary<NSString*,NSString*> *contactDic = @{@"iPhone 4"    : @"32715501",
-                                                          @"iPhone 4 b"  : @"32715503",
-                                                          @"iPhone 5s"   : @"32715507",
-                                                          @"iPhone 5s b" : @"32715508",
-                                                          @"iPhone 6 b"  : @"21442163",
+        NSDictionary<NSString*,NSString*> *contactDic = @{@"iPhone 5ss"  : @"53786146",
+                                                          @"iPhone 5ss b": @"53786148",
                                                           @"iPhone 6+"   : @"21442162",
-                                                          @"iPhone 6+ b" : @"21442168"};
+                                                          @"iPhone 6+ b" : @"21442168",
+                                                          @"iPhone 7"    : @"32715507",
+                                                          @"iPhone 7 b"  : @"32715508"};
         [[[contactDic allKeys] sortedArrayUsingSelector:@selector(compare:)] enumerateObjectsUsingBlock:^(NSString * _Nonnull contactName, NSUInteger idx, BOOL * _Nonnull stop) {
             
             NSString * telNumber = contactDic[contactName];
