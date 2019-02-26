@@ -126,8 +126,7 @@
                                                             @"JP" : @"080"};
     [countryPrefixDic enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull countryCode, NSString * _Nonnull countryTel, BOOL * _Nonnull stop) {
         
-        NSDictionary<NSString*,NSString*> *contactDic = @{@"4s"  : @"4800",
-                                                          @"5"   : @"5000",
+        NSDictionary<NSString*,NSString*> *contactDic = @{@"5"   : @"5000",
                                                           @"5s"  : @"5800",
                                                           @"6"   : @"6000",
                                                           @"6+"  : @"6004",
@@ -137,6 +136,10 @@
                                                           @"7+"  : @"7004",
                                                           @"8"   : @"8000",
                                                           @"8+"  : @"8004",
+                                                          @"X"   : @"1000",
+                                                          @"XR"     : @"1001",
+                                                          @"XS"     : @"1008",
+                                                          @"XS Max" : @"1009",
                                                           };
         [[[contactDic allKeys] sortedArrayUsingSelector:@selector(compare:)] enumerateObjectsUsingBlock:^(NSString * _Nonnull model, NSUInteger idx, BOOL * _Nonnull stop) {
             
